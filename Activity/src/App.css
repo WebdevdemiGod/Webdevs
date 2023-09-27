@@ -1,0 +1,25 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+
+body{
+  background-color: rgb(20, 76, 150);
+}
+
+.Buttons{
+  background-color: rgb(76, 120, 179);
+  display: flex;
+  flex-direction: column;
+}
+
+.content{
+    background-color: aliceblue;
+    padding: 30px;
+}
+
+
+

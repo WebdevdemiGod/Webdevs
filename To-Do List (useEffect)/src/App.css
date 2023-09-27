@@ -1,0 +1,52 @@
+#root {
+  max-width: 1580px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  background-color: 	rgb(41,41,41);
+}
+
+
+.toDoBox{
+
+  border-radius: 10px;
+  padding: 25px;
+}
+
+p{
+  font-size: 2em;
+}
+
+.btns{
+  display: flex;
+  justify-content: space-around;
+}
+
+.btns button{
+  background-color: rgb(255,163,26);
+  border: solid rgb(247, 149, 3);
+}
+
+li button{
+  background-color: rgb(255,163,26);
+}
+li{
+  display: flex;
+  margin-bottom: 10px;
+  justify-content: space-around;
+  align-items: center;
+  background-color: rgb(128,128,128);
+  padding: 5px;
+  border-radius: 10px;
+}
+input{
+  width: 15rem;  
+  height: 2em;
+  border-radius: 5px;
+  background-color: rgb(107, 136, 136);
+}
+
+
+
+
+

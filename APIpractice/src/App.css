@@ -1,0 +1,28 @@
+body{
+  background-color: rgb(26, 24, 24);
+}
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+
+
+img {
+  width: 800px;
+  height: 800px;
+  object-fit: cover;
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+h1{
+  color: beige;
+}
