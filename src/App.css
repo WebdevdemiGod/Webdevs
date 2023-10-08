@@ -1,0 +1,71 @@
+body {
+  background-image: url('avengers.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  margin: 0; 
+  padding: 0; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; 
+  
+}
+
+
+h1{
+  font-size:80px;
+  @import url('https://fonts.googleapis.com/css2?family=Bruno+Ace+SC&family=Press+Start+2P&display=swap');
+  font-family: 'Bruno Ace SC', cursive;
+  font-family: 'Press Start 2P', cursive; 
+}
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  background: transparent;
+  backdrop-filter: blur(100px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100em;
+  max-height: 45vh;
+  min-height: 60vh;
+  max-width: 90%;
+  
+}
+
+.details {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.detailBox {
+  background-color: #7f7f7f;
+  margin: 1rem;
+  padding: 2em;
+  flex: 1; 
+  max-width: 200px; 
+  transition: max-width 0.3s; 
+
+}
+
+
+
+
+input{
+  background-color: rgb(197, 190, 186);
+  width:30vmax;
+  height: 1.5vmax;
+}
+
+.ID{
+  font-size: 20px;
+
+}
+
+.info{
+  font-size: 20px;
+}
