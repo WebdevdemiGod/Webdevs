@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import './App.css';
 import ContactList from './ContactList';
 
-function App() {
+export default function App() {
   const [inputValues, setInputValues] = useState({});
   const [contact, setContact] = useState([]);
   const [selectedContact, setSelectedContact] = useState(null);
@@ -10,6 +10,8 @@ function App() {
     nameError: '',
     contactError: '',
     ageError: '',
+    idError: '',
+    courseError: '',
   });
 
   const [isAddButtonDisabled, setIsAddButtonDisabled] = useState(true);
@@ -18,13 +20,14 @@ function App() {
     const namePattern = /^[A-Za-z\s]+$/;
     const contactPattern = /^\d+$/;
     const agePattern = /^\d+$/;
+    const idPattern = /^\d+$/;
+    const coursePattern = /^[A-Za-z\s]+$/;
 
-    if (inputValues.name && !namePattern.test(inputValues.name)) {
-      setErrors((prevErrors) => ({ ...prevErrors, nameError: 'No numbers and special characters' }));
+    if (inputValues.id && !idPattern.test(inputValues.id)) {
+      setErrors((prevErrors) => ({ ...prevErrors, idError: 'Only numbers' }));
     } else {
-      setErrors((prevErrors) => ({ ...prevErrors, nameError: '' }));
+      setErrors((prevErrors) => ({ ...prevErrors, idError: '' }));
     }
-
 
     if (inputValues.contact && !contactPattern.test(inputValues.contact)) {
       setErrors((prevErrors) => ({ ...prevErrors, contactError: 'Only numbers' }));
@@ -38,9 +41,20 @@ function App() {
       setErrors((prevErrors) => ({ ...prevErrors, ageError: '' }));
     }
 
+    if (inputValues.name && !namePattern.test(inputValues.name)) {
+      setErrors((prevErrors) => ({ ...prevErrors, nameError: 'No numbers and special characters' }));
+    } else {
+      setErrors((prevErrors) => ({ ...prevErrors, nameError: '' }));
+    }
+    if (inputValues.course && !coursePattern.test(inputValues.course)) {
+      setErrors((prevErrors) => ({ ...prevErrors, courseError: 'No numbers and special characters' }));
+    } else {
+      setErrors((prevErrors) => ({ ...prevErrors, courseError: '' }));
+    }
+
 
     setIsAddButtonDisabled(
-      !inputValues.name || !inputValues.contact || !inputValues.age
+      !inputValues.name || !inputValues.contact || !inputValues.age || !inputValues.id || !inputValues.course
     );
   }, [inputValues]);
 
@@ -67,7 +81,7 @@ function App() {
         { ...inputValues, id: Date.now() },
       ]);
     }
-    setInputValues({ name: '', contact: '', age: '' });
+    setInputValues({ name: '', contact: '', age: '', id: '', course: '' });
   };
 
   const editContact = (id) => {
@@ -82,7 +96,26 @@ function App() {
     setContact((prevContact) =>
       prevContact.filter((item) => item.id !== id)
     );
+
+    if (selectedContact && selectedContact.id === id) {
+      setSelectedContact(null);
+      setInputValues({ name: '', contact: '', age: '', id: '', course: '' });
+    }
   };
+
+  useEffect(() => {
+    
+    fetch('https://my-json-server.typicode.com/troy1129/jsonplaceholder/db')
+      .then((response) => response.json())
+      .then((data) => {
+        if (data && data.data) {
+          setContact(data.data); 
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  }, []);
 
   return (
     <div className='main'>
@@ -121,17 +154,35 @@ function App() {
         />
         <p style={{ color: 'red' }} className='error'>{errors.ageError}</p>
       </div>
+      <div className='input-box'>
+        <label htmlFor='id'>ID: </label>
+        <input
+          type='text'
+          name='id'
+          id='id'
+          value={inputValues.id}
+          onChange={handleInputChange}
+        />
+        <p style={{ color: 'red' }} className='error'>{errors.idError}</p>
+      </div>
+      <div className='input-box'>
+        <label htmlFor='course'>Course: </label>
+        <input
+          type='text'
+          name='course'
+          id='course'
+          value={inputValues.course}
+          onChange={handleInputChange}
+        />
+        <p style={{ color: 'red' }} className='error'>{errors.courseError}</p>
+      </div>
       <button onClick={addToHandler} disabled={isAddButtonDisabled}>
         {selectedContact ? 'Update' : 'Add'}
       </button>
 
-      <ContactList
-        contact={contact}
-        editContact={editContact}
-        deleteToHandler={deleteToHandler}
+      <ContactList contact={contact} editContact={editContact} deleteToHandler={deleteToHandler}
       />
     </div>
   );
 }
 
-export default App;
