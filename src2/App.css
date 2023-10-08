@@ -1,0 +1,67 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  background-color: #27475f;
+  border: rgb(27, 48, 65) solid;
+}
+
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #a59898;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+.inputArea{
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+input{
+  height: 40px;
+  border-radius: 100px;
+  width: 50%;
+  background-color: rgb(164, 171, 175);
+  text-align: center;
+  font-size: 2.5em;
+  
+}
+
+.btns{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-evenly;
+}
+button:hover{
+  background-color: #ccbdbd;
+}
+header{
+  background-color: rgb(10, 95, 131);
+  padding: 10px;
+}
+
+table{
+  padding: 10px;
+  width: 100%;
+  border: solid white;
+  max-width: 100%;
+}
+
+table td{
+  border-bottom: solid white 0.5px;
+  padding: 10px;
+  
+}
+
