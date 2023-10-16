@@ -76,13 +76,15 @@ export default function App() {
       });
       setSelectedContact(null);
     } else {
+
       setContact((prevContact) => [
         ...prevContact,
-        { ...inputValues, id: Date.now() },
+        { ...inputValues },
       ]);
     }
     setInputValues({ name: '', contact: '', age: '', id: '', course: '' });
   };
+  
 
   const editContact = (id) => {
     const selected = contact.find((item) => item.id === id);
