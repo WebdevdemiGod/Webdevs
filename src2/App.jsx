@@ -47,7 +47,7 @@ useEffect(()=>{
         </p>
         </div>
         <div className='btns'>
-          <button onClick={addToHandler}>ADD</button>
+          <button onClick={addToHandler} disabled={inputError}>ADD</button>
           <button onClick={deleteAllHandler}>DELETE ALL</button>
         </div>
       <div className="Display">
@@ -62,7 +62,7 @@ useEffect(()=>{
               <tr key={item.id}>
                 <td>{item.text}</td> 
                 <td>
-                  <button onClick={()=>deleteHandler(item.id)}>DELETE</button>  
+                  <button onClick={()=>deleteHandler(item.id)} >DELETE</button>  
                 </td> 
               </tr>
             ))}
