@@ -1,33 +1,46 @@
-import { useState, useEffect } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState, useEffect } from 'react';
 
 function App() {
-  const [count, setCount] = useState(0);
-  const [title, setTitle] = useState('');
+  const [data, setData] = useState(null);
 
-  function getData() {
-    fetch('https://dog.ceo/api/breeds/image/random')
+  useEffect(() => {
+    fetch('https://my-json-server.typicode.com/troy1129/jsonplaceholder/db')
       .then(response => response.json())
-      .then(json => {
-        console.log(json);
-        setTitle(json.message);
-      });
-  }
+      .then(data => setData(data));
+  }, []);
+
+  if (data === null) return 'Loading...';
 
   return (
     <div>
-      <h1>CLICK FOR RANDOM DOGGOS</h1>
-
-      <button onClick={getData}>CLICK HERE PLS!</button>
-      <div className='Dog'>
-        {title && <img src={title} alt="dog" />}
-      </div>
-      
+      <h1>Data:</h1>
+      <h2>Students:</h2>
+      {data.data.map((student, index) => (
+        <div key={index}>
+          <p>ID: {student.id}</p>
+          <p>Name: {student.name}</p>
+          <p>Age: {student.age}</p>
+          <p>Course: {student.course}</p>
+        </div>
+      ))}
+      <h2>Passengers:</h2>
+      {data.passengers.map((passenger, index) => (
+        <div key={index}>
+          <p>Name: {passenger.name}</p>
+          <p>ID: {passenger.id}</p>
+          <p>Destination: {passenger.destination}</p>
+        </div>
+      ))}
+      <h2>Destinations:</h2>
+      {data.destinations.map((destination, index) => (
+        <div key={index}>
+          <p>ID: {destination.id}</p>
+          <p>Destination: {destination.destination}</p>
+          <p>Price: {destination.price}</p>
+        </div>
+      ))}
     </div>
   );
 }
 
-
-export default App
+export default App;
