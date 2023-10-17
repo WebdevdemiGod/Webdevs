@@ -19,7 +19,6 @@ export default function App() {
     const namePattern = /^[A-Za-z\s]+$/;
     const idPattern = /^\d+$/;
    
-
     if (inputValues.id && !idPattern.test(inputValues.id)) {
       setErrors((prevErrors) => ({ ...prevErrors, idError: 'Only numbers' }));
     } else if (contact.some(item => item.id === inputValues.id)) {
@@ -28,7 +27,6 @@ export default function App() {
       setErrors((prevErrors) => ({ ...prevErrors, idError: '' }));
     }
     
-
     if (inputValues.name && !namePattern.test(inputValues.name)) {
       setErrors((prevErrors) => ({ ...prevErrors, nameError: 'No numbers and special characters' }));
     } else {
@@ -36,11 +34,10 @@ export default function App() {
     }
     
     setIsAddButtonDisabled(
-      !inputValues.name ||!inputValues.id 
+      !inputValues.name || !inputValues.id 
     );
   }, [inputValues]);
 
-  
   useEffect(() => {
     fetch('https://my-json-server.typicode.com/troy1129/jsonplaceholder/db')
       .then((response) => response.json())
@@ -91,18 +88,34 @@ export default function App() {
     setInputValues({ name: '', id: '' });
   };
 
-  const assignToBus = (busNumber, passenger) => {
-    setBuses((prevBuses) => ({
-      ...prevBuses,
-      [busNumber]: [...prevBuses[busNumber], passenger],
-    }));
-
-    setContact((prevContact) => prevContact.filter((contact) => contact.id !== passenger.id));
-  };
 
   const updateSales = (price) => {
     setTotalSales((prevSales) => prevSales + price);
   };
+  const assignToBus = (busNumber, passenger) => {
+    const busId = parseInt(passenger.id);
+    if (busId >= 1 && busId <= 2) { 
+      setBuses((prevBuses) => ({
+        ...prevBuses,
+        Bus1: [...(prevBuses.Bus1 || []), passenger],
+      }));
+    } else if (busId >= 3 && busId <= 4) { 
+      setBuses((prevBuses) => ({
+        ...prevBuses,
+        Bus2: [...(prevBuses.Bus2 || []), passenger],
+      }));
+    } else if (busId >= 5 && busId <= 6) {
+     
+      setBuses((prevBuses) => ({
+        ...prevBuses,
+        Bus3: [...(prevBuses.Bus3 || []), passenger],
+      }));
+    }
+  
+    setContact((prevContact) => prevContact.filter((contact) => contact.id !== passenger.id));
+  };
+  
+  
 
   return (
     <div className='main'>
