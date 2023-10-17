@@ -1,0 +1,193 @@
+import React, { useState, useEffect } from 'react';
+import './App.css';
+
+export default function App() {
+  const [inputValues, setInputValues] = useState({});
+  const [contact, setContact] = useState([]);
+  const [destinations, setDestinations] = useState([]);
+  const [selectedContact, setSelectedContact] = useState(null);
+  const [errors, setErrors] = useState({ nameError: '', idError: '' });
+  const [isAddButtonDisabled, setIsAddButtonDisabled] = useState(true);
+  const [buses, setBuses] = useState({
+    Bus1: [],
+    Bus2: [],
+    Bus3: [],
+  });
+  const [totalSales, setTotalSales] = useState(0);
+
+  useEffect(() => {
+    const namePattern = /^[A-Za-z\s]+$/;
+    const idPattern = /^\d+$/;
+   
+
+    if (inputValues.id && !idPattern.test(inputValues.id)) {
+      setErrors((prevErrors) => ({ ...prevErrors, idError: 'Only numbers' }));
+    } else if (contact.some(item => item.id === inputValues.id)) {
+      setErrors((prevErrors) => ({ ...prevErrors, idError: 'ID already exists' }));
+    } else {
+      setErrors((prevErrors) => ({ ...prevErrors, idError: '' }));
+    }
+    
+
+    if (inputValues.name && !namePattern.test(inputValues.name)) {
+      setErrors((prevErrors) => ({ ...prevErrors, nameError: 'No numbers and special characters' }));
+    } else {
+      setErrors((prevErrors) => ({ ...prevErrors, nameError: '' }));
+    }
+    
+    setIsAddButtonDisabled(
+      !inputValues.name ||!inputValues.id 
+    );
+  }, [inputValues]);
+
+  
+  useEffect(() => {
+    fetch('https://my-json-server.typicode.com/troy1129/jsonplaceholder/db')
+      .then((response) => response.json())
+      .then((data) => {
+        if (data && data.passengers) {
+          setContact(data.passengers);
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching passengers data:', error);
+      });
+
+    fetch('https://my-json-server.typicode.com/troy1129/jsonplaceholder/db')
+      .then((response) => response.json())
+      .then((dest) => {
+        if (dest && dest.destinations) {
+          setDestinations(dest.destinations);
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching destinations data:', error);
+      });
+  }, []);
+
+  const handleInputChange = (event) => {
+    setInputValues((prevValues) => {
+      return { ...prevValues, [event.target.name]: event.target.value };
+    });
+  };
+
+  const addToHandler = () => {
+    if (selectedContact) {
+      setContact((prevContact) => {
+        return prevContact.map((item) => {
+          if (item.id === selectedContact.id) {
+            return { ...inputValues, id: selectedContact.id };
+          }
+          return item;
+        });
+      });
+      setSelectedContact(null);
+    } else {
+      setContact((prevContact) => [
+        ...prevContact,
+        { ...inputValues },
+      ]);
+    }
+    setInputValues({ name: '', id: '' });
+  };
+
+  const assignToBus = (busNumber, passenger) => {
+    setBuses((prevBuses) => ({
+      ...prevBuses,
+      [busNumber]: [...prevBuses[busNumber], passenger],
+    }));
+
+    setContact((prevContact) => prevContact.filter((contact) => contact.id !== passenger.id));
+  };
+
+  const updateSales = (price) => {
+    setTotalSales((prevSales) => prevSales + price);
+  };
+
+  return (
+    <div className='main'>
+      <h1>SALES: PHP {totalSales}</h1>
+
+      <div className='input-box'>
+        <label htmlFor='name'>Name: </label>
+        <input
+          type='text'
+          name='name'
+          id='name'
+          value={inputValues.name}
+          onChange={handleInputChange}
+        />
+        <p style={{ color: 'red' }} className='error'>{errors.nameError}</p>
+      </div>
+
+      <div className='input-box'>
+        <label htmlFor='id'>ID: </label>
+        <input
+          type='text'
+          name='id'
+          id='id'
+          value={inputValues.id}
+          onChange={handleInputChange}
+        />
+        <p style={{ color: 'red' }} className='error'>{errors.idError}</p>
+      </div>
+
+      <button onClick={addToHandler} disabled={isAddButtonDisabled}>
+        {selectedContact ? 'Update' : 'Add'}
+      </button>
+
+      <div className='displyArea'>
+        {contact.length === 0 ? (
+          <h2>NO LIST SO FAR</h2>
+        ) : (
+          <>
+            <h2>Passengers: </h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                </tr>
+              </thead>
+              <tbody>
+                {contact.map((item) => (
+                  <tr key={item.id}>
+                    <td>{item.id}</td>
+                    <td>{item.name}</td>
+                    <td>
+                      {destinations.map((destination) => (
+                        <button
+                          key={destination.id}
+                          onClick={() => {
+                            assignToBus(`Bus${destination.id}`, item);
+                            updateSales(destination.price);
+                          }}
+                        >
+                          {destination.destination}
+                        </button>
+                      ))}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </>
+        )}
+      </div>
+
+      <div className='busAssignments'>
+        <h2>Bus Assignments</h2>
+        {Object.keys(buses).map((busNumber) => (
+          <div key={busNumber}>
+            <h3>{busNumber}</h3>
+            <ul>
+              {buses[busNumber].map((passenger) => (
+                <li key={passenger.id}>{passenger.name}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
